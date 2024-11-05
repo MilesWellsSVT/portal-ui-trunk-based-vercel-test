@@ -31,12 +31,7 @@ jobs:
           code=$?
           if [ $code -eq 0 ]; then
             deploymentUrl=`cat deployment-url.txt`
-            vercel alias set $deploymentUrl staging.mileswells.com --token=${{ secrets.VERCEL_TOKEN }} 2>error.txt
-            code=$?
-            if [ $code -eq 0 ]; then
-              errorMessage=`cat error.txt`
-              echo "There was an error: $errorMessage"
-            fi
+            vercel alias set $deploymentUrl staging.mileswells.com --token=${{ secrets.VERCEL_TOKEN }} --scope svt-robotics
           else
             errorMessage=`cat error.txt`
             echo "There was an error: $errorMessage"
