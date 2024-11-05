@@ -31,7 +31,7 @@ jobs:
           code=$?
           if [ $code -eq 0 ]; then
               deploymentUrl=`cat deployment-url.txt`
-              vercel alias $deploymentUrl my-custom-domain.com
+              vercel alias $deploymentUrl my-custom-domain.com --token=${{ secrets.VERCEL_TOKEN }}
           else
               errorMessage=`cat error.txt`
               echo "There was an error: $errorMessage"
