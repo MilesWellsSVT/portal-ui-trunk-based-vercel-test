@@ -1,0 +1,31 @@
+name: Tag Deployment (Staging)
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+on:
+  push:
+    # Pattern matched against refs/tags
+    tags:
+      - "*" # Push events to every tag not containing /
+jobs:
+  Deploy-Production:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+      - name: Pull Vercel Environment Information
+        run: vercel pull --yes --environment=preview --git-branch=staging --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Build Project Artifacts
+        run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Deploy Project Artifacts to Vercel and Assign Domain
+        run: |
+          vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} >deployment-url.txt 2>error.txt
+          code=$?
+          if [ $code -eq 0 ]; then
+              deploymentUrl=`cat deployment-url.txt`
+              vercel alias $deploymentUrl my-custom-domain.com
+          else
+              errorMessage=`cat error.txt`
+              echo "There was an error: $errorMessage"
+          fi
