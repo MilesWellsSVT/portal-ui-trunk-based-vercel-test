@@ -6,7 +6,7 @@ on:
   push:
     # Pattern matched against refs/tags
     tags:
-      - "*" # Push events to every tag not containing /
+      - "staging/*" # Push events to every tag not containing /
 jobs:
   Deploy-Staging:
     runs-on: ubuntu-latest
