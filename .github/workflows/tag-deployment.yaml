@@ -31,6 +31,7 @@ jobs:
           code=$?
           if [ $code -eq 0 ]; then
             deploymentUrl=`cat deployment-url.txt`
+            echo "Vercel deployment url: $deploymentUrl"
             vercel alias $deploymentUrl staging.mileswells.com --token=${{ secrets.VERCEL_TOKEN }} 2>error.txt
             code=$?
             if [ $code -eq 0 ]; then
