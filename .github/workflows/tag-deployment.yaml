@@ -11,7 +11,7 @@ jobs:
   Deploy-Staging:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - uses: pnpm/action-setup@v3
         name: Install pnpm
@@ -31,8 +31,7 @@ jobs:
           code=$?
           if [ $code -eq 0 ]; then
             deploymentUrl=`cat deployment-url.txt`
-            echo "Vercel deployment url: $deploymentUrl"
-            vercel alias $deploymentUrl staging.mileswells.com --token=${{ secrets.VERCEL_TOKEN }} 2>error.txt
+            vercel alias set $deploymentUrl staging.mileswells.com --token=${{ secrets.VERCEL_TOKEN }} 2>error.txt
             code=$?
             if [ $code -eq 0 ]; then
               errorMessage=`cat error.txt`
