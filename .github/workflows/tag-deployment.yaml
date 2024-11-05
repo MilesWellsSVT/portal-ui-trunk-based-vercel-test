@@ -30,9 +30,14 @@ jobs:
           vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} >deployment-url.txt 2>error.txt
           code=$?
           if [ $code -eq 0 ]; then
-              deploymentUrl=`cat deployment-url.txt`
-              vercel alias $deploymentUrl staging.mileswells.com --token=${{ secrets.VERCEL_TOKEN }}
-          else
+            deploymentUrl=`cat deployment-url.txt`
+            vercel alias $deploymentUrl staging.mileswells.com --token=${{ secrets.VERCEL_TOKEN }} 2>error.txt
+            code=$?
+            if [ $code -eq 0 ]; then
               errorMessage=`cat error.txt`
               echo "There was an error: $errorMessage"
+            fi
+          else
+            errorMessage=`cat error.txt`
+            echo "There was an error: $errorMessage"
           fi
