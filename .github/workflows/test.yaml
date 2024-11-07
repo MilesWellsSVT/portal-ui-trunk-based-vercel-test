@@ -1,0 +1,11 @@
+name: Test
+on: [workflow_dispatch]
+jobs:
+  Test-Job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Put stuff in github output
+        id: gh-out
+        run: echo "mytesturl.com" >> "$GITHUB_OUTPUT"
+      - name: Assign Staging Domain to Deployment
+        run: echo ${{ steps.gh-out.outputs }}
