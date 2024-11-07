@@ -25,13 +25,7 @@ jobs:
       - name: Build Project Artifacts
         run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
       - name: Deploy Project Artifacts to Vercel and Assign Domain
-        run: |
-          vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} >deployment-url.txt 2>error.txt
-          code=$?
-          if [ $code -eq 0 ]; then
-            deploymentUrl=`cat deployment-url.txt`
-            vercel alias set $deploymentUrl ${{ vars.DEPLOYMENT_URL_STAGING }} --token=${{ secrets.VERCEL_TOKEN }} --scope svt-robotics
-          else
-            errorMessage=`cat error.txt`
-            echo "There was an error: $errorMessage"
-          fi
+        id: vercel-deploy
+        run: echo "DEPLOYMENT_URL_VERCEL=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }})" >> "$GITHUB_OUTPUT"
+      - name: Assign Staging Domain to Deployment
+        run: vercel alias set ${{ steps.vercel-deploy.outputs.DEPLOYMENT_URL_VERCEL }} ${{ vars.DEPLOYMENT_URL_STAGING }} --token=${{ secrets.VERCEL_TOKEN }} --scope svt-robotics
