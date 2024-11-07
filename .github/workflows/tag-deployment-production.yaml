@@ -30,8 +30,8 @@ jobs:
           code=$?
           if [ $code -eq 0 ]; then
             deploymentUrl=`cat deployment-url.txt`
-            vercel alias set $deploymentUrl mileswells.com --token=${{ secrets.VERCEL_TOKEN }} --scope svt-robotics
-            vercel promote mileswells.com --token=${{ secrets.VERCEL_TOKEN }} --scope svt-robotics
+            vercel alias set $deploymentUrl ${{ vars.DEPLOYMENT_URL_PRODUCTION }} --token=${{ secrets.VERCEL_TOKEN }} --scope svt-robotics
+            vercel promote ${{ vars.DEPLOYMENT_URL_PRODUCTION }} --token=${{ secrets.VERCEL_TOKEN }} --scope svt-robotics
           else
             errorMessage=`cat error.txt`
             echo "There was an error: $errorMessage"
