@@ -3,12 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "auth": "pnpm dlx azure-devops-npm-auth --ci --client_id=2a1dbb34-8941-41a1-87ee-7ad1162d09a4 --tenant_id=d020c663-21a2-4d6c-9417-ff6f05fad873",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "@svt/design-system": "4.1.6",
     "react": "^18",
     "react-dom": "^18",
     "next": "14.2.16"
