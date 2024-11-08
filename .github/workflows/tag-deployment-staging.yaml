@@ -18,11 +18,16 @@ jobs:
           version: 8
           run_install: false
 
-      - name: Install Node with pnpm Cache
-        uses: actions/setup-node@v4
+      - name: Get pnpm Store Directory
+        run: echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - uses: actions/cache@v3
+        name: Setup pnpm Cache
         with:
-          node-version: 20
-          cache: "pnpm"
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
 
       - name: Authenticate with Private NPM Registry
         run: echo -e "${{ secrets.NPM_AUTH_TOKEN }}" > ~/.npmrc
