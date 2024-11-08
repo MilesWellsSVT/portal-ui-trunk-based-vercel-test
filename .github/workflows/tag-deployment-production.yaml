@@ -12,11 +12,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v3
+      - uses: pnpm/action-setup@v4
         name: Install pnpm
         with:
           version: 8
           run_install: false
+
+      - name: Install Node with pnpm Cache
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "pnpm"
+
+      - name: Authenticate with Private NPM Registry
+        run: echo -e "${{ secrets.NPM_AUTH_TOKEN }}" > ~/.npmrc
 
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
