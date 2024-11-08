@@ -35,7 +35,7 @@ jobs:
         run: echo "DEPLOYMENT_URL_VERCEL=$(vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }})" >> "$GITHUB_OUTPUT"
 
       - name: Assign Production Domain to Deployment
-        run: vercel alias set $deploymentUrl ${{ vars.DEPLOYMENT_URL_PRODUCTION }} --token=${{ secrets.VERCEL_TOKEN }} --scope svt-robotics
+        run: vercel alias set ${{ steps.vercel-deploy.outputs.DEPLOYMENT_URL_VERCEL }} ${{ vars.DEPLOYMENT_URL_PRODUCTION }} --token=${{ secrets.VERCEL_TOKEN }} --scope svt-robotics
 
       - name: Mark Deployment as Promoted in Vercel
         run: vercel promote ${{ vars.DEPLOYMENT_URL_PRODUCTION }} --token=${{ secrets.VERCEL_TOKEN }} --scope svt-robotics
